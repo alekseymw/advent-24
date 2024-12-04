@@ -24,15 +24,17 @@ fun main() {
         if (input[startI][startJ] != 'X') return 0
 
         return allDirections.count { (dx, dy) ->
-            generateSequence(Pair(startI, startJ)) { (i, j) ->
+            val directionContainsWord = generateSequence(Pair(startI, startJ)) { (i, j) ->
                 val newI = i + dx
                 val newJ = j + dy
-                if (isValid(newI, newJ, maxI, maxJ)) Pair(newI, newJ) else Pair(startI, startJ)
+                if (isValid(newI, newJ, maxI, maxJ)) Pair(newI, newJ) else null
             }
                 .take(4)
                 .toList()
-                .zip(listOf('X', 'M', 'A', 'S'))
-                .all { input[it.first.first][it.first.second] == it.second }
+                .takeIf { it.size == 4 }
+                ?.zip(listOf('X', 'M', 'A', 'S'))
+                ?.all { input[it.first.first][it.first.second] == it.second }
+            directionContainsWord == true
         }
     }
 
